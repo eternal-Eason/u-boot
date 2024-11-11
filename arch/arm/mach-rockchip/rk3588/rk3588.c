@@ -329,6 +329,16 @@ int ft_system_setup(void *blob, struct bd_info *bd)
 		fdt_status_fail_by_pathf(blob, "/gpu@fb000000");
 	}
 
+	/* rkvdec: ip_state[1]: bit6,7 */
+	if (ip_state[1] & BIT(6)) {
+		fdt_status_fail_by_pathf(blob, "/video-codec@fdc38000");
+		fdt_status_fail_by_pathf(blob, "/video-decoder@fdc38100");
+	}
+	if (ip_state[1] & BIT(7)) {
+		fdt_status_fail_by_pathf(blob, "/video-codec@fdc40000");
+		fdt_status_fail_by_pathf(blob, "/video-decoder@fdc40100");
+	}
+
 	parent = fdt_path_offset(blob, "/cpus");
 	if (parent < 0)
 		return 0;
